@@ -36,7 +36,7 @@ class GuiApplication:
         # Labels that detail the instructions on how to use the app.
         self.guidelines1.grid(column=0, row=0, sticky=tk.W, padx=(13, 10))
         self.guidelines2.grid(row=15, column=0, sticky=tk.W, padx=(13, 10))
-        self.allowedSpeciesLabel.grid(row=3, column=2, columnspan=2, sticky=tk.E, padx=(0, 305), pady=(0, 0))
+        self.allowedSpeciesLabel.grid(row=3, column=2, columnspan=2, sticky=tk.E, padx=(0, 350), pady=(0, 0))
         self.outputMessage.grid(row=15, column=2 , columnspan=2)
 
         # Uneditable Text Box showcasing an example for the input format.

@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     # Starts the desired interface.
     if args.interface == "gui":
-        gui.GuiApplication().run("Message Generation", "960x850")
+        gui.GuiApplication().run("Message Generation", "950x1000")
     else:
         if args.path == "input":
             print(MO.manualInput(input(r"Please input your messages with the delimiter '\n': ").replace(r'\n', '\n')))

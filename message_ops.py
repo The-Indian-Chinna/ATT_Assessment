@@ -59,8 +59,6 @@ class AnimalDict:
             animal_DOB = _animal.dateOfBirth.split('/')
             oldestCommon_DOB = self.maps[_animal.species]['Oldest'].dateOfBirth.split('/')
             if datetime.date(int(animal_DOB[2]), int(animal_DOB[0]), int(animal_DOB[1])) < datetime.date(int(oldestCommon_DOB[2]), int(oldestCommon_DOB[0]), int(oldestCommon_DOB[1])):
-                print(_animal.name)
-                print(self.maps[_animal.species]['Oldest'].name)
                 self.maps[_animal.species]['Oldest'] = _animal
             self.maps[_animal.species]['Members'].append(_animal)
         else:
