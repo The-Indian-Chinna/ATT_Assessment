@@ -1,0 +1,26 @@
+[
+ {
+   "name": "Spike",
+   "date_of_birth": "1/1/2020",
+   "color": "white",
+   "species": "dog"
+ },
+ {
+   "name": "Sandy",
+   "date_of_birth": "3/5/2018",
+   "color": "blue",
+   "species": "cat"
+ },
+ {
+   "name": "Fluffy",
+   "date_of_birth": "2/29/2016",
+   "color": "black",
+   "species": "sheep"
+ },
+ {
+   "name": "Garfield",
+   "date_of_birth": "9/17/1998",
+   "color": "orange",
+   "species": "cat"
+ }
+]
