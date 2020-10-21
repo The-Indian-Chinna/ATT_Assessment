@@ -1,7 +1,7 @@
 """This module handles all of the core logic when determining the oldest common animal"""
 import re
 import json
-import datetime
+from datetime import datetime
 
 class Animal:
     """Animal to represent each datapoint input in by the user."""
@@ -14,7 +14,7 @@ class Animal:
             _species (str): The Animal's species.
         """
         self.name = _name
-        self.dateOfBirth = _dateOfBirth
+        self.dateOfBirth = datetime.strptime(_dateOfBirth, "%m/%d/%Y")
         self.color = _color
         self.species = _species
 
@@ -56,11 +56,9 @@ class AnimalDict:
 
         # Oldest animal update and adding animal to maps["Members"].
         if self.maps.get(_animal.species):
-            animal_DOB = _animal.dateOfBirth.split('/')
-            oldestCommon_DOB = self.maps[_animal.species]['Oldest'].dateOfBirth.split('/')
-            if datetime.date(int(animal_DOB[2]), int(animal_DOB[0]), int(animal_DOB[1])) < datetime.date(int(oldestCommon_DOB[2]), int(oldestCommon_DOB[0]), int(oldestCommon_DOB[1])):
-                self.maps[_animal.species]['Oldest'] = _animal
             self.maps[_animal.species]['Members'].append(_animal)
+            if _animal.dateOfBirth < self.maps[_animal.species]['Oldest'].dateOfBirth:
+                self.maps[_animal.species]['Oldest'] = _animal
         else:
             self.maps[_animal.species] = {'Oldest': _animal, 'Members':[_animal]}
 
@@ -81,16 +79,7 @@ class AnimalDict:
             self.message (str): The constructed message from the oldest common animal.
         """
         if self.message == "":
-            longestSublist, oldestCommon = max(len(species['Members']) for species in self.maps.values()), None
-            listOfObjects = [species['Oldest'] for species in self.maps.values() if len(species['Members']) == longestSublist]
-            for animal in listOfObjects:
-                if not oldestCommon:
-                    oldestCommon = animal
-                else:
-                    animalDOB = animal.dateOfBirth.split('/')
-                    oldestCommonDOB = oldestCommon.dateOfBirth.split('/')
-                    if datetime.date(int(animalDOB[2]), int(animalDOB[0]), int(animalDOB[1])) < datetime.date(int(oldestCommonDOB[2]), int(oldestCommonDOB[0]), int(oldestCommonDOB[1])):
-                        oldestCommon = animal
+            oldestCommon = self.maps[max(self.maps, key=lambda x:len(self.maps[x]['Members']))]['Oldest']
             self.message = f'{oldestCommon.name}, the {oldestCommon.color} {oldestCommon.species} says {self.species[oldestCommon.species]}!'
         return self.message
 
@@ -119,13 +108,13 @@ def manualInput(_inputString, _allowedSpecies = None, _interface = "cli") -> str
         return "Invalid Allowed Species Input"
 
     # Intializes and generates the Oldest Common Animal.
-    try:
-        _inputString = _inputString.strip().split('\n')
-        _ = [Primary.addAnimal(Animal(*d.strip('\n').strip().split(','))) for d in _inputString]
-        Primary.oldestCommon()
-        return Primary.message
-    except:
-        return "Invalid Input Format"
+    #try:
+    _inputString = _inputString.strip().split('\n')
+    _ = [Primary.addAnimal(Animal(*d.strip('\n').strip().split(','))) for d in _inputString]
+    Primary.oldestCommon()
+    return Primary.message
+    #except:
+    #    return "Invalid Input Formatc"
 
 def fileImport(_path, _allowedSpecies = None, _interface = "cli") -> str:
     """Parses the input string which is then used to intialize the Animal Dictionary. After
