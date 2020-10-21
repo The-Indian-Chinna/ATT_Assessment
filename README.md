@@ -96,4 +96,10 @@ To utilize the graphical user interface:
 python3 main.py --interface=gui
 ```
 
+To utilize the graphical user interface with a specific window size WidthxHeight (window size defaults to 950x1000):
+```bash
+python3 main.py --interface=gui --window_size=950x1000
+```
+
+
 You can test these commands with the example files provided.

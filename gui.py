@@ -6,11 +6,16 @@ import sys
 
 class GuiApplication:
     """This is the gui that the user interacts with to generate the oldest common animal string"""
-    def __init__(self):
-        """Intializes all of the elements found on the gui."""
+    def __init__(self, _windowName, _windowSize):
+        """Intializes all of the elements found on the gui.
+        Args:
+            _windowName (str): The name of the window.
+            _windowSize (list): The size of the window [Height, Width].
+        """
         # Window
         self.root = tk.Tk()
-
+        self.windowSize = _windowSize
+        self.windowName = _windowName
         # Buttons
         self.generate = tk.Button(self.root, text='Generate Message',relief=tk.RIDGE, borderwidth=2)
         self.upload = tk.Button(self.root, text='Import File', relief=tk.RIDGE, borderwidth=2)
@@ -20,12 +25,21 @@ class GuiApplication:
 
         # Text Boxes
         self.example = tk.Text(self.root, height=5, width=40, borderwidth=2)
-        self.userInput = tk.Text(self.root,relief=tk.RIDGE, height=50, width=55, borderwidth=2)
-        self.result = tk.Text(self.root, relief=tk.RIDGE, height=50, width=55, borderwidth=2)
+        self.userInput = tk.Text(self.root,
+                                 relief=tk.RIDGE,
+                                 height=50 if self.windowSize[1] >= 1000 else 35 if self.windowSize[1] >= 760 else 25,
+                                 width=55,
+                                 borderwidth=2)
+        self.result = tk.Text(self.root,
+                              relief=tk.RIDGE,
+                              height=50 if self.windowSize[1] >= 1000 else 35 if self.windowSize[1] >= 760 else 25,
+                              width=55,
+                              borderwidth=2)
         self.allowedSpecies = tk.Text(self.root, relief=tk.RIDGE, height=3, width=40, borderwidth=2)
 
         # Labels
-        self.guidelines1 = tk.Label(self.root, text="""This is a graphical user interface to generate the oldest common species message.\nYou can upload a csv, json, txt, file or input your data manually into the input box.""")
+        self.guidelines1 = tk.Label(self.root, text="This is a graphical user interface to generate the oldest common species message.\n"+
+                                                    "You can upload a csv, json, txt, file or input your data manually into the input box.")
         self.guidelines2 = tk.Label(self.root, text="Please input your data line-by-line with the delimiter as ',': ")
         self.allowedSpeciesLabel = tk.Label(self.root, text="Allowed Species: ")
         self.outputMessage = tk.Label(self.root, text="Ouput Message: ")
@@ -40,11 +54,11 @@ class GuiApplication:
         self.outputMessage.grid(row=15, column=2 , columnspan=2)
 
         # Uneditable Text Box showcasing an example for the input format.
-        self.example.insert(tk.END, """Manual Input Data Format:\n\t
-                                        Spike,1/1/2020,white,dog\n\t
-                                        Sandy,3/5/2018,blue,cat\n\t
-                                        Fluffy,2/29/2016,black,sheep\n\t
-                                        Garfield,9/17/1998,orange,cat\n""")
+        self.example.insert(tk.END, "Manual Input Data Format:\n"+
+                                    "   Spike,1/1/2020,white,dog\n"+
+                                    "   Sandy,3/5/2018,blue,cat\n"+
+                                    "   Fluffy,2/29/2016,black,sheep\n"+
+                                    "   Garfield,9/17/1998,orange,cat")
         self.example.bind("<Key>", lambda e: "break")
         self.example.grid(row=3, column=0, padx=(15, 10), sticky=tk.W)
 
@@ -73,7 +87,10 @@ class GuiApplication:
     def inputOutput(self):
         """Formats all of the interactable Text elements on the gui."""
         # User input
-        self.userInput.insert(tk.END, "Spike,1/1/2020,white,dog\nSandy,3/5/2018,blue,cat\nFluffy,2/29/2016,black,sheep\nGarfield,9/17/1998,orange,cat")
+        self.userInput.insert(tk.END, """Spike,1/1/2020,white,dog
+                                         Sandy,3/5/2018,blue,cat
+                                         Fluffy,2/29/2016,black,sheep
+                                         Garfield,9/17/1998,orange,cat""".replace(" ", ""))
         self.userInput.grid(row=20, column=0, padx=(15, 10), sticky=tk.W)
 
         # User output
@@ -108,14 +125,10 @@ class GuiApplication:
             self.result.delete(1.0,tk.END)
             return MO.manualInput(self.userInput.get(1.0, tk.END), allowedSpecies, "gui")
 
-    def run(self, name, size):
-        """Intializes and runs the gui.
-        Args:
-            name (str): The name of the window.
-            size (str): The size of the window.
-        """
-        self.root.title(name)
-        self.root.geometry(size)
+    def run(self):
+        """Intializes and runs the gui."""
+        self.root.title(self.windowName)
+        self.root.geometry(str(self.windowSize[0])+"x"+str(self.windowSize[1]))
         self.headerInfo()
         self.inputOutput()
         self.buttons()
